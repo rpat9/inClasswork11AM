@@ -1,0 +1,4 @@
+eggs   1.50
+milk   2.49
+bread  1.49
+mountain dew  4.49
