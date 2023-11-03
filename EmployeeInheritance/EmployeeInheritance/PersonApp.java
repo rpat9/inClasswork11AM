@@ -12,5 +12,6 @@ public class PersonApp {
 		for (Person p : persons) {
 			System.out.println(p);
 		}
+		// This comment will be in a new branch
 	}
 }
