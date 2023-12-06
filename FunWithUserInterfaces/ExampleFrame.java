@@ -3,11 +3,16 @@ package FunWithUserInterfaces;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import javax.swing.JOptionPane;
@@ -24,37 +29,52 @@ public class ExampleFrame extends JFrame implements ActionListener {
   private JTextField txtText;
   private JButton buttonClose;
 
-  public void setUpMenu() {
+  public void setupMenu() {
     JMenuBar bar = new JMenuBar();
     setJMenuBar(bar);
-
-    JMenu menuFile = new JMenu("File");
-    bar.add(menuFile);
-
-    JMenuItem miSayHi = new JMenuItem("Say Hi");
-    menuFile.add(miSayHi);
-
-    JMenuItem miExit = new JMenuItem("Exit");
-    menuFile.add(miExit);
-
-    JMenu menuHelp = new JMenu("Help");
-    bar.add(menuHelp);
-
-    JMenuItem miAbout = new JMenuItem("About");
-    menuHelp.add(miAbout);
-
+    JMenu mnuFile = new JMenu("File");
+    bar.add(mnuFile);
+    JMenuItem miSayHi = new JMenuItem("Say Hi!");
+    mnuFile.add(miSayHi);
     miSayHi.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         JOptionPane.showMessageDialog(null, "Hi!");
       }
     });
-
+    JMenuItem miSave = new JMenuItem("Save");
+    mnuFile.add(miSave);
+    miSave.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        JFileChooser chooser = new JFileChooser();
+        if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+          File f = chooser.getSelectedFile();
+          try {
+            PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(f)));
+            pw.println(txtText.getText());
+            pw.close();
+            JOptionPane.showMessageDialog(null, "File was saved.");
+          } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Could not save.");
+          }
+        }
+      }
+    });
+    JMenuItem miExit = new JMenuItem("Exit");
     miExit.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         System.exit(0);
       }
     });
-
+    mnuFile.add(miExit);
+    JMenu mnuHelp = new JMenu("Help");
+    bar.add(mnuHelp);
+    JMenuItem miAbout = new JMenuItem("About");
+    miAbout.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        JOptionPane.showMessageDialog(null, "The greatest thing ever!");
+      }
+    });
+    mnuHelp.add(miAbout);
   }
 
   public void setUpGUI() {
@@ -87,7 +107,7 @@ public class ExampleFrame extends JFrame implements ActionListener {
     panCenter.add(txtText);
     c.add(panCenter, BorderLayout.CENTER);
 
-    setUpMenu();
+    setupMenu();
   }
 
   @Override
